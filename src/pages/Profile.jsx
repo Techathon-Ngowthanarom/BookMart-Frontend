@@ -14,7 +14,8 @@ export default function Profile() {
   }
   async function updatePassword(event) {
     event.preventDefault(); setNotice(''); setError('');
-    try { const form = new FormData(event.currentTarget); await api.changePassword(form.get('password')); event.currentTarget.reset(); setNotice('เปลี่ยนรหัสผ่านแล้ว'); }
+    const formElement = event.currentTarget;
+    try { const form = new FormData(formElement); await api.changePassword(form.get('password')); formElement.reset(); setNotice('เปลี่ยนรหัสผ่านแล้ว'); }
     catch (problem) { setError(problem.message); }
   }
   return <main className="page-wrap"><section className="account-card profile-card"><UserRound className="account-icon"/><div className="modal-kicker">YOUR ACCOUNT</div><h1>บัญชีของฉัน</h1><p>สมาชิก BookMart · {user.role === 'admin' ? 'ผู้ดูแลระบบ' : 'นักอ่าน'}</p>{user.role === 'admin' && <span className="role-chip"><ShieldCheck size={14}/> ADMIN</span>}{notice && <p className="success-message" role="status">{notice}</p>}{error && <div className="form-error" role="alert">{error}</div>}
